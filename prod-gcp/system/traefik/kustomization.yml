@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+kind: Kustomization
+
+resources:
+  - custom-resource-definitions/ingress-routes.yml
+  - custom-resource-definitions/ingress-route-tcp.yml
+  - custom-resource-definitions/ingress-route-udps.yml
+  - custom-resource-definitions/middlewares.yml
+  - custom-resource-definitions/tls-options.yml
+  - custom-resource-definitions/tls-stores.yml
+  - custom-resource-definitions/traefik-services.yml
+  - cluster-role-admin.yml
+  - cluster-role.yml
+  - service-account.yml
+  - cluster-role-binding.yml
+  - deployment.yml
+  - service.yml
+  - pod-disruption-budget.yml

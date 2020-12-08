@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: &app traefik-ingress-public
+  namespace: system
+  labels:
+    app: *app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *app
+  template:
+    metadata:
+      labels:
+        app: *app
+        name: *app
+    spec:
+      serviceAccountName: traefik-ingress
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - *app
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      terminationGracePeriodSeconds: 60
+      containers:
+        - image: traefik:v2.2.0
+          name: *app
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            failureThreshold: 1
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+            limits:
+              cpu: 300m
+              memory: 75Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+            - containerPort: 8080
+          args:
+            - --api.dashboard=true
+            - --api.insecure=true
+            - --ping
+            - --metrics.prometheus
+            - --log.level=INFO
+
+            - --providers.kubernetescrd.labelselector=kubernetes.io/ingress.class=traefik-private
+            - --providers.kubernetesingress.labelselector=kubernetes.io/ingress.class=traefik-private
+
+            - --entryPoints.traefik.address=:8080
+            - --entryPoints.web.address=:80
+            - --entryPoints.web-secure.address=:443
+            - --entryPoints.web-secure.http.tls=true
+            - --entrypoints.web.http.redirections.entryPoint.to=web-secure
+            # Redirection can be skipped by creating an IngressRoute with higher priority
+            - --entrypoints.web.http.redirections.entrypoint.priority=1000
