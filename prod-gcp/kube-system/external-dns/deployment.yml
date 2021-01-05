@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: external-dns
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: external-dns
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "7979"
+    spec:
+      serviceAccountName: external-dns
+      containers:
+        - name: external-dns
+          image: k8s.gcr.io/external-dns/external-dns:v0.7.3
+          args:
+            - --log-level=debug
+            - --source=ingress
+            - --source=service
+            - --policy=upsert-only
+            - --publish-internal-services
+            - --provider=google
+            - --domain-filter=freemiumpn.com
+            - --google-project=fpn-k8s-dev
+            - --registry=txt
+            - --txt-owner-id=system
+            - --txt-prefix=system-
+            - --txt-owner-id=freemiumpn-com
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+          volumeMounts:
+            - name: gcp-key
+              mountPath: /var/secrets/google
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            limits:
+              cpu: 200m
+              memory: 50Mi
+      volumes:
+        - name: gcp-key
+          secret:
+            secretName: gcp-key
