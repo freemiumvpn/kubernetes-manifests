@@ -4,6 +4,5 @@ kind: Kustomization
 bases:
   - ci
   - metrics
-  - system
   - cert-manager
   - web

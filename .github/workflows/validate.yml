@@ -1,0 +1,20 @@
+name: Validate Manfiests
+
+on:
+  push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install kubectl
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+          sudo mv ./kustomize /usr/local/bin/kustomize
+          kustomize version
+      - name: Validate Manfiests
+        run: |
+          kustomize build ./prod-gcp/ > build.yml
+          du -sh build.yml
