@@ -10,7 +10,7 @@ spec:
     - web-secure
   routes:
     - kind: Rule
-      match: Host(`www.freemiumpn.com`)
+      match: Host(`freemiumpn.com`) || Host(`www.freemiumpn.com`)
       services:
         - kind: Service
           name: web-app

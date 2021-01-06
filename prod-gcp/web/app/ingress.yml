@@ -8,4 +8,5 @@ metadata:
     external-dns.alpha.kubernetes.io/target: freemiumpn.com
 spec:
   rules:
+    - host: freemiumpn.com
     - host: www.freemiumpn.com
