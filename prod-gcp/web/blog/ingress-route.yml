@@ -16,4 +16,4 @@ spec:
           name: web-blog
           port: 80
   tls:
-    secretName: fremiumpn-com-ssl
+    secretName: blog-fremiumpn-com-ssl

@@ -7,4 +7,3 @@ bases:
 
 resources:
   - namespace.yml
-  - ssl-certficate.yml
