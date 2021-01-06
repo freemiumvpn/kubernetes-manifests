@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: &ingress public-web-app
+  namespace: web
+  annotations:
+    kubernetes.io/ingress.class: traefik-ingress-public
+    external-dns.alpha.kubernetes.io/target: freemiumpn.com
+spec:
+  rules:
+    - host: www.freemiumpn.com
