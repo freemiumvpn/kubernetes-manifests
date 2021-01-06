@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &ingress-route public-web-blog
+  namespace: web
+  labels:
+    kubernetes.io/ingress.class: traefik-ingress-public
+spec:
+  entryPoints:
+    - web-secure
+  routes:
+    - kind: Rule
+      match: Host(`blog.freemiumpn.com`)
+      services:
+        - kind: Service
+          name: web-blog
+          port: 80
+  tls:
+    secretName: fremiumpn-com-ssl

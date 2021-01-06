@@ -4,12 +4,12 @@ on:
   push
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install kubectl
+      - name: Install
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
           sudo mv ./kustomize /usr/local/bin/kustomize
