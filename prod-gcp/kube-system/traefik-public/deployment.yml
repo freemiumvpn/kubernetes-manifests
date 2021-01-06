@@ -3,11 +3,11 @@ kind: Deployment
 
 metadata:
   name: &app traefik-ingress-public
-  namespace: system
+  namespace: kube-system
   labels:
     app: *app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: *app
@@ -63,20 +63,20 @@ spec:
             - containerPort: 80
             - containerPort: 443
             - containerPort: 8080
+          # see options https://doc.traefik.io/traefik/reference/static-configuration/cli/
           args:
             - --api.dashboard=true
             - --api.insecure=true
             - --ping
             - --metrics.prometheus
-            - --log.level=INFO
+            - --log.level=DEBUG
 
-            - --providers.kubernetescrd.labelselector=kubernetes.io/ingress.class=traefik-private
-            - --providers.kubernetesingress.labelselector=kubernetes.io/ingress.class=traefik-private
+            - --providers.kubernetescrd.labelselector=kubernetes.io/ingress.class=traefik-ingress-public
+            - --providers.kubernetesingress.labelselector=kubernetes.io/ingress.class=traefik-ingress-public
 
             - --entryPoints.traefik.address=:8080
             - --entryPoints.web.address=:80
             - --entryPoints.web-secure.address=:443
             - --entryPoints.web-secure.http.tls=true
             - --entrypoints.web.http.redirections.entryPoint.to=web-secure
-            # Redirection can be skipped by creating an IngressRoute with higher priority
             - --entrypoints.web.http.redirections.entrypoint.priority=1000

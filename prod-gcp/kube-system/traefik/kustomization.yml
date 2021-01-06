@@ -14,6 +14,3 @@ resources:
   - cluster-role.yml
   - service-account.yml
   - cluster-role-binding.yml
-  - deployment.yml
-  - service.yml
-  - pod-disruption-budget.yml

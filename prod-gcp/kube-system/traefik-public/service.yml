@@ -2,15 +2,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: &app traefik-ingress-public
-  namespace: system
+  namespace: kube-system
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: web
       port: 80
-      nodePort: 30280
+      # nodePort: 30280
     - name: web-secure
       port: 443
-      nodePort: 30243
+      # nodePort: 30243
+    - name: traefik
+      port: 8080
+      # nodePort: 30281
   selector:
     app: *app
