@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - certficate.yml
   - deployment.yml
+  - pod-disruption-budget.yml
   - service.yml
   - ingress.yml
   - ingress-route.yml
