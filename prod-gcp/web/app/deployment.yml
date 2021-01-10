@@ -39,3 +39,24 @@ spec:
               port: 3000
             initialDelaySeconds: 10
             timeoutSeconds: 2
+          env:
+            - name: AUTH0_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-env
+                  key: AUTH0_DOMAIN
+            - name: AUTH0_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-env
+                  key: AUTH0_CLIENT_ID
+            - name: AUTH0_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-env
+                  key: AUTH0_CLIENT_SECRET
+            - name: AUTH0_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-env
+                  key: AUTH0_REDIRECT_URI

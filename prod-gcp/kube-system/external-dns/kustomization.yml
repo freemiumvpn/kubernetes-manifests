@@ -10,5 +10,9 @@ resources:
 
 secretGenerator:
   - name: gcp-key
+    namespace: kube-system
     files:
       - secrets/key.json
+
+generatorOptions:
+  disableNameSuffixHash: true

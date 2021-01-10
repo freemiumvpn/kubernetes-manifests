@@ -5,3 +5,12 @@ resources:
   - cert-manager.yml
   - cluster-issuer.yml
   - certificate.yml
+
+secretGenerator:
+  - name: gcp-key
+    namespace: cert-manager
+    files:
+      - secrets/key.json
+
+generatorOptions:
+  disableNameSuffixHash: true
