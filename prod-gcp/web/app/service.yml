@@ -8,7 +8,7 @@ metadata:
 
 spec:
   selector:
-    app: web-app
+    app: *service
   ports:
     - name: *service
       port: 80

@@ -60,3 +60,13 @@ spec:
                 secretKeyRef:
                   name: web-app-env
                   key: AUTH0_REDIRECT_URI
+            - name: OFFER_WALL_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-env
+                  key: OFFER_WALL_CLIENT_SECRET
+            - name: OFFER_WALL_URI
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-env
+                  key: OFFER_WALL_URI
