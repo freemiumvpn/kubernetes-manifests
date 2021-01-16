@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: &ingress-route public-web-api
+  namespace: web
+  labels:
+    kubernetes.io/ingress.class: traefik-ingress-public
+spec:
+  entryPoints:
+    - web-secure
+  routes:
+    - kind: Rule
+      match: Host(`api.freemiumpn.com`)
+      services:
+        - kind: Service
+          name: web-api
+          port: 4000
+  tls:
+    secretName: api-fremiumpn-com-ssl
