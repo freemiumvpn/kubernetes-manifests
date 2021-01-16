@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: api.freemiumpn.com
+  namespace: web
+spec:
+  secretName: api-fremiumpn-com-ssl
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames:
+    - api.freemiumpn.com
