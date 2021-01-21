@@ -8,3 +8,12 @@ resources:
   - service.yml
   - ingress.yml
   - ingress-route.yml
+
+secretGenerator:
+  - name: web-api-env
+    namespace: web
+    envs:
+      - secrets/.env
+
+generatorOptions:
+  disableNameSuffixHash: true
